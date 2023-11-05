@@ -18,8 +18,10 @@ public class SpeedManager : NSObject, ObservableObject, SpeedManagerTrigger {
     public var delegate: SpeedManagerDelegate?
    
     @Published public var authorizationStatus: SpeedManagerAuthorizationStatus = .notDetermined
+
     @Published public var speed: Double = 0
     @Published public var speedAccuracy: Double = 0
+    @Published public var location: CLLocation?
 
     private var isRequestingLocation = false
     
@@ -87,10 +89,12 @@ extension SpeedManager: CLLocationManagerDelegate {
     
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        let currentSpeed = locations.last?.speed ?? 0
+        location = locations.last
+
+        let currentSpeed = location?.speed ?? 0
         speed = currentSpeed >= 0 ? currentSpeed * speedUnit.rawValue : .nan
-        speedAccuracy = locations.last?.speedAccuracy ?? .nan
-        
+        speedAccuracy = location?.speedAccuracy ?? .nan
+
         self.delegate?.speedManager(self, didUpdateSpeed: speed, speedAccuracy: speedAccuracy)
 
         self.locationManager.requestLocation()
