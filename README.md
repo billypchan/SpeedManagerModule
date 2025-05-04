@@ -13,10 +13,11 @@
 
 Measure the speed using an iPhone or Apple Watch.
 
-<p align="center" >
-  <img src="https://github.com/ezefranca/SpeedManagerModule/blob/main/banner.jpg" alt="SpeedManagerModule" title="SpeedManagerModule">
-</p>
 
+https://github.com/user-attachments/assets/fbee0a69-a993-4de2-aebb-9459533b0800
+
+> [!NOTE]
+> The Demo UI was created using [LidorFadida](https://github.com/LidorFadida/) package [SpeedometerSwiftUI](https://github.com/LidorFadida/SpeedometerSwiftUI)
 
 ### Motivation
 
@@ -24,7 +25,7 @@ I like to measure my speed inside trains and buses. When I was searching for a s
 
 ## Installation
 
-The Swift Package Manager is the easiest way to install and manage SpeedManagerModule as a dependecy.
+The Swift Package Manager is the easiest way to install and manage SpeedManagerModule as a dependency.
 Simply add SpeedManagerModule to your dependencies in your Package.swift file:
 
 ```swift
@@ -61,7 +62,6 @@ Or add the info to the Info.plist
 
 ## Usage example
 
-
 ### @StateObject
 
 ```swift
@@ -77,7 +77,6 @@ struct ContentView: View {
             case .authorized:
                 Text("Your current speed is:")
                 Text("\(speedManager.speed)")
-                Text("km/h")
             default:
                 Spacer()
             }
@@ -88,8 +87,7 @@ struct ContentView: View {
 
 ### Using Delegates
 
-``` swift
-
+```swift
 import UIKit
 
 class SpeedViewController: UIViewController {
@@ -105,13 +103,22 @@ class SpeedViewController: UIViewController {
 
 extension SpeedViewController: SpeedManagerDelegate {
     
-    func speedManager(_ manager: SpeedManager, didUpdateSpeed speed: Double) {
+    func speedManager(_ manager: SpeedManager, didUpdateSpeed speed: Double, speedAccuracy: Double) {
+        // Update UI with the current speed and accuracy
     }
     
     func speedManager(_ manager: SpeedManager, didFailWithError error: Error) {
+        // Handle error
+    }
+    
+    func speedManager(_ speedManager: SpeedManager, didUpdateAuthorizationStatus status: SpeedManagerAuthorizationStatus) {
+        // Handle authorization status update
+    }
+    
+    func speedManagerDidFailWithLocationServicesUnavailable(_ speedManager: SpeedManager) {
+        // Handle location services unavailable
     }
 }
-
 ```
 
 ### Changing Unit
@@ -119,26 +126,21 @@ extension SpeedViewController: SpeedManagerDelegate {
 Just choose the unit during the class init.
 
 ```swift
-
     var speedManagerKmh = SpeedManager(.kilometersPerHour)
-    var speedManagerMs = SpeedManager(.meterPerSecond)
+    var speedManagerMs = SpeedManager(.metersPerSecond)
     var speedManagerMph = SpeedManager(.milesPerHour)
-
 ```
 
 ### Demo 
 
-Check the ```Demo``` folder to see it in action.
-
-
-https://user-images.githubusercontent.com/3648336/208701407-ebf7319f-32c1-45bc-adc7-aa8509f0336d.mov
+Check the `Demo` folder to see it in action.
 
 
 ## Meta
 
 @ezefranca – [@ezefranca](https://twitter.com/ezefranca) 
 
-Distributed under the MIT license. See ``LICENSE`` for more information.
+Distributed under the MIT license. See `LICENSE` for more information.
 
 [https://github.com/ezefranca/SpeedManagerModule](https://github.com/ezefranca/SpeedManagerModule)
 
