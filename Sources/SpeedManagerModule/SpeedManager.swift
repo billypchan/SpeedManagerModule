@@ -20,7 +20,9 @@ public class SpeedManager: NSObject, ObservableObject, SpeedManagerTrigger {
     
     /// The delegate to receive updates from the SpeedManager.
     public weak var delegate: SpeedManagerDelegate?
-    
+
+    @Published public var location: CLLocation?
+
     /// The current authorization status for location services.
     @Published public private(set) var authorizationStatus: SpeedManagerAuthorizationStatus = .notDetermined {
         didSet {
@@ -117,7 +119,9 @@ extension SpeedManager: CLLocationManagerDelegate {
     ///   - locations: An array of new location data objects.
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let lastLocation = locations.last else { return }
-        
+
+        location = lastLocation
+
         let currentSpeed = lastLocation.speed
         speed = currentSpeed >= 0 ? currentSpeed * speedUnit.rawValue : .nan
         speedAccuracy = lastLocation.speedAccuracy
