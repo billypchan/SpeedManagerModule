@@ -82,6 +82,7 @@ public class SpeedManager: NSObject, ObservableObject, SpeedManagerTrigger {
                 locationManager.allowsBackgroundLocationUpdates = true
             }
             locationManager.startUpdatingLocation()
+            locationManager.startUpdatingHeading()
         case .notDetermined:
             locationManager.requestAlwaysAuthorization()
         case .denied:
