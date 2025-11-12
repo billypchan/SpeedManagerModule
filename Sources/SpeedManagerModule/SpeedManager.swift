@@ -44,6 +44,9 @@ public class SpeedManager: NSObject, ObservableObject, SpeedManagerTrigger {
     /// The accuracy of the current speed.
     @Published public private(set) var speedAccuracy: Double = 0
 
+    /// The current heading in degrees (magnetic).
+    @Published public var degrees: Double = 0
+
     // MARK: - Initializer
     
     /// Initializes a new SpeedManager.
@@ -128,6 +131,15 @@ extension SpeedManager: CLLocationManagerDelegate {
         speedAccuracy = lastLocation.speedAccuracy
         
         locationManager.requestLocation()
+    }
+
+    /// Called when new heading data is available.
+    /// - Parameters:
+    ///   - manager: The location manager providing the data.
+    ///   - newHeading: The updated heading information.
+    public func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        // Mirror CompassHeading behavior: use magnetic heading
+        degrees = newHeading.magneticHeading
     }
     
     /// Called when the location manager encounters an error.
