@@ -26,13 +26,42 @@ I like to measure my speed inside trains and buses. When I was searching for a s
 ## Installation
 
 The Swift Package Manager is the easiest way to install and manage SpeedManagerModule as a dependency.
-Simply add SpeedManagerModule to your dependencies in your Package.swift file:
+
+### Swift Package Manager
+
+#### Package.swift
+Add SpeedManagerModule to your dependencies in your Package.swift file:
 
 ```swift
 dependencies: [
     .package(url: "https://github.com/ezefranca/SpeedManagerModule.git")
 ]
 ```
+
+#### Xcode Integration
+1. **Open your Xcode project**
+2. **File** → **Add Package Dependencies**
+3. **Enter repository URL**: `https://github.com/ezefranca/SpeedManagerModule.git`
+4. **Select version**: Choose "Up to Next Major Version" 
+5. **Add to target**: Select your app target and click "Add Package"
+
+### Binary Distribution (XCFramework)
+
+For faster build times, you can use the pre-compiled binary version:
+
+1. **Download from Releases**:
+   - Go to [Releases](https://github.com/ezefranca/SpeedManagerModule/releases)
+   - Download `SpeedManagerModule.xcframework.zip`
+   - Extract the `.xcframework` file
+
+2. **Add to Xcode**:
+   - Drag `SpeedManagerModule.xcframework` into your project
+   - ✅ Check "Copy items if needed"
+   - ✅ Add to your app target
+
+3. **Alternative: Use Binary Package**:
+   - Xcode automatically uses binary version when available
+   - No additional configuration needed
 
 ### Update Info.plist
 
