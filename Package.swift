@@ -10,8 +10,7 @@ let package = Package(
     name: "SpeedManagerModule",
     platforms: [
         .macOS(.v12),
-        .iOS(.v15),
-        .watchOS(.v9)
+        .iOS(.v15)
     ],
     products: [
         .library(
