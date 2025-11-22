@@ -1,0 +1,27 @@
+{
+  "object" : {
+    "artifacts" : [
+      {
+        "kind" : "xcframework",
+        "packageRef" : {
+          "identity" : "speedmanagermodule",
+          "kind" : "root",
+          "location" : "/Users/bill/Documents/GitHub/SpeedManagerModule",
+          "name" : "SpeedManagerModule"
+        },
+        "path" : "/Users/bill/Documents/GitHub/SpeedManagerModule/Build/SpeedManagerModule.xcframework",
+        "source" : {
+          "type" : "local"
+        },
+        "targetName" : "SpeedManagerModule"
+      }
+    ],
+    "dependencies" : [
+
+    ],
+    "prebuilts" : [
+
+    ]
+  },
+  "version" : 7
+}

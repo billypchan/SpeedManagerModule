@@ -1,0 +1,77 @@
+{
+  "buildCommand" : {
+    "command" : "build",
+    "skipDependencies" : false,
+    "style" : "buildOnly"
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "PACKAGE-PRODUCT:SpeedManagerModule"
+    }
+  ],
+  "containerPath" : "/Users/bill/Documents/GitHub/SpeedManagerModule",
+  "continueBuildingAfterErrors" : false,
+  "dependencyScope" : "workspace",
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "undefined_arch",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : true,
+      "platform" : "watchos",
+      "sdk" : "watchos11.5",
+      "sdkVariant" : "watchos",
+      "supportedArchitectures" : [
+        "armv4t",
+        "armv5",
+        "armv6",
+        "armv7",
+        "armv7f",
+        "armv7s",
+        "armv7k",
+        "arm64",
+        "arm64e"
+      ],
+      "targetArchitecture" : "undefined_arch"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "/Users/bill/Documents/GitHub/SpeedManagerModule/Build/DerivedData-watchos-arm64_32/Build/Intermediates.noindex",
+      "buildProductsPath" : "/Users/bill/Documents/GitHub/SpeedManagerModule/Build/DerivedData-watchos-arm64_32/Build/Products",
+      "derivedDataPath" : "/Users/bill/Documents/GitHub/SpeedManagerModule/Build/DerivedData-watchos-arm64_32",
+      "indexDataStoreFolderPath" : "/Users/bill/Documents/GitHub/SpeedManagerModule/Build/DerivedData-watchos-arm64_32/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/bill/Documents/GitHub/SpeedManagerModule/Build/DerivedData-watchos-arm64_32/Index.noindex/PrecompiledHeaders",
+      "pchPath" : "/Users/bill/Documents/GitHub/SpeedManagerModule/Build/DerivedData-watchos-arm64_32/Build/Intermediates.noindex/PrecompiledHeaders"
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "commandLine" : {
+        "table" : {
+          "ARCHS" : "arm64_32",
+          "BUILD_LIBRARY_FOR_DISTRIBUTION" : "YES",
+          "MACH_O_TYPE" : "mh_dylib",
+          "ONLY_ACTIVE_ARCH" : "YES",
+          "PRODUCT_NAME" : "SpeedManagerModule",
+          "SDKROOT" : "watchos11.5"
+        }
+      },
+      "synthesized" : {
+        "table" : {
+          "ACTION" : "build",
+          "COLOR_DIAGNOSTICS" : "YES",
+          "diagnostic_message_length" : "55",
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "YES",
+          "ONLY_ACTIVE_ARCH" : "YES"
+        }
+      }
+    }
+  },
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}
