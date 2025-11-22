@@ -1,0 +1,147 @@
+name: Build and Release XCFramework
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag to release'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build-xcframework:
+    runs-on: macos-14
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.4'
+        
+    - name: Build XCFramework
+      run: |
+        chmod +x ./build-xcframework.sh
+        ./build-xcframework.sh
+        
+    - name: Verify XCFramework
+      run: |
+        ls -la ./Build/
+        file ./Build/SpeedManagerModule.xcframework.zip
+        
+    - name: Get version
+      id: version
+      run: |
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+        else
+          echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.version.outputs.version }}
+        release_name: SpeedManagerModule ${{ steps.version.outputs.version }}
+        body: |
+          ## SpeedManagerModule ${{ steps.version.outputs.version }}
+          
+          ### 📦 Binary Distribution
+          
+          This release includes a pre-built XCFramework for faster integration.
+          
+          ### Installation
+          
+          Add to your Swift Package dependencies:
+          ```swift
+          .package(url: "https://github.com/billypchan/SpeedManagerModule.git", from: "${{ steps.version.outputs.version }}")
+          ```
+          
+          ### Files
+          - `SpeedManagerModule.xcframework.zip` - Binary XCFramework for iOS and watchOS
+          - Checksum file included for verification
+          
+          ### Platforms
+          - iOS 15.0+
+          - watchOS 8.0+
+          - macOS 12.0+ (development)
+          
+          ### Changes
+          - See commit history for detailed changes
+          
+        draft: false
+        prerelease: false
+        
+    - name: Upload XCFramework
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./Build/SpeedManagerModule.xcframework.zip
+        asset_name: SpeedManagerModule.xcframework.zip
+        asset_content_type: application/zip
+        
+    - name: Upload Checksum
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./Build/SpeedManagerModule.xcframework.zip.checksum
+        asset_name: SpeedManagerModule.xcframework.zip.checksum
+        asset_content_type: text/plain
+        
+    - name: Update Package.swift with binary target
+      run: |
+        CHECKSUM=$(cat ./Build/SpeedManagerModule.xcframework.zip.checksum)
+        DOWNLOAD_URL="https://github.com/billypchan/SpeedManagerModule/releases/download/${{ steps.version.outputs.version }}/SpeedManagerModule.xcframework.zip"
+        
+        # Create updated Package.swift with binary target
+        cat > Package-Updated.swift << EOF
+        // swift-tools-version: 5.9
+        import PackageDescription
+        
+        let package = Package(
+            name: "SpeedManagerModule",
+            platforms: [
+                .macOS(.v12),
+                .iOS(.v15),
+                .watchOS(.v8)
+            ],
+            products: [
+                .library(
+                    name: "SpeedManagerModule",
+                    targets: ["SpeedManagerModule"]),
+            ],
+            targets: [
+                .binaryTarget(
+                    name: "SpeedManagerModule",
+                    url: "${DOWNLOAD_URL}",
+                    checksum: "${CHECKSUM}"
+                ),
+            ],
+            swiftLanguageVersions: [SwiftVersion.v5]
+        )
+        EOF
+        
+        echo "Generated Package.swift with binary target:"
+        cat Package-Updated.swift
+        
+    - name: Upload Updated Package.swift
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./Package-Updated.swift
+        asset_name: Package-Binary.swift
+        asset_content_type: text/plain
