@@ -16,18 +16,17 @@ let package = Package(
             targets: ["SpeedManagerModule"]),
     ],
     targets: [
-        // Binary target for distribution
+        // Local binary target for development and testing
         .binaryTarget(
             name: "SpeedManagerModule",
-            // Replace with your actual release URL and checksum
-            url: "https://github.com/billypchan/SpeedManagerModule/releases/download/v1.0.0/SpeedManagerModule.xcframework.zip",
-            checksum: "REPLACE_WITH_ACTUAL_CHECKSUM"
+            path: "./Build/SpeedManagerModule.xcframework"
         ),
         
-        // Uncomment below for local XCFramework during development
+        // For release distribution, use:
         // .binaryTarget(
         //     name: "SpeedManagerModule",
-        //     path: "./Build/SpeedManagerModule.xcframework"
+        //     url: "https://github.com/billypchan/SpeedManagerModule/releases/download/v0.1.1/SpeedManagerModule.xcframework.zip",
+        //     checksum: "fb70985432a4a8ca2d282e015fbef910a5a7e32cbc9bbff3578f6ae5854ec7eb"
         // ),
     ],
     swiftLanguageVersions: [SwiftVersion.v5]
