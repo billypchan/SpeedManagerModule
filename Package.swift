@@ -4,7 +4,7 @@
 import PackageDescription
 
 // Set to true to use binary distribution, false for source distribution
-let useBinaryTarget = false
+let useBinaryTarget = true
 
 let package = Package(
     name: "SpeedManagerModule",
