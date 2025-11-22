@@ -4,13 +4,17 @@
 
 ### Package Configuration Updated ✅
 
-The `Package-Binary.swift` has been updated to:
+The `Package.swift` has been updated to support both source and binary distribution:
 
-1. **Local Development**: Uses local XCFramework path for testing
-2. **Release Distribution**: Ready for GitHub releases with proper checksum
-3. **Version**: Updated to v0.1.1
+1. **Source Distribution**: Default mode with `useBinaryTarget = false`
+2. **Binary Distribution**: Set `useBinaryTarget = true` for XCFramework usage
+3. **Local Development**: Uses local XCFramework path for testing
+4. **Release Distribution**: Ready for GitHub releases with proper checksum
+5. **Version**: Updated to v0.1.1
 
-### Binary Target Options
+### Binary Target Configuration
+
+To use binary distribution, set `useBinaryTarget = true` in Package.swift.
 
 #### Option 1: Local Development (Currently Active)
 ```swift
@@ -33,7 +37,7 @@ The `Package-Binary.swift` has been updated to:
 
 - ✅ `Build/SpeedManagerModule.xcframework/` - XCFramework structure
 - ✅ `Build/SpeedManagerModule.xcframework.zip` - Distribution archive
-- ✅ `Package-Binary.swift` - Updated with v0.1.1 and correct checksum
+- ✅ `Package.swift` - Updated with v0.1.1 and correct checksum for binary distribution
 
 ### Next Steps for Release
 
@@ -50,7 +54,7 @@ The `Package-Binary.swift` has been updated to:
    ```
 
 3. **Switch to Release Mode**:
-   - Uncomment the release `.binaryTarget` in `Package-Binary.swift`
+   - Set `useBinaryTarget = true` and uncomment the release `.binaryTarget` in `Package.swift`
    - Comment out the local path `.binaryTarget`
 
 ### Platform Support
@@ -68,7 +72,7 @@ The current checksum for `SpeedManagerModule.xcframework.zip`:
 fb70985432a4a8ca2d282e015fbef910a5a7e32cbc9bbff3578f6ae5854ec7eb
 ```
 
-This checksum is already configured in the `Package-Binary.swift` file.
+This checksum is already configured in the `Package.swift` file for binary distribution.
 
 ### Alternative: Source Distribution
 

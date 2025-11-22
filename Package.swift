@@ -3,6 +3,9 @@
 
 import PackageDescription
 
+// Set to true to use binary distribution, false for source distribution
+let useBinaryTarget = true
+
 let package = Package(
     name: "SpeedManagerModule",
     platforms: [
@@ -19,7 +22,21 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
-    targets: [
+    targets: useBinaryTarget ? [
+        // Binary distribution target
+        .binaryTarget(
+            name: "SpeedManagerModule",
+            path: "./Build/SpeedManagerModule.xcframework"
+        ),
+        
+        // For release distribution, replace the path-based binary target above with:
+        // .binaryTarget(
+        //     name: "SpeedManagerModule",
+        //     url: "https://github.com/billypchan/SpeedManagerModule/releases/download/v0.1.1/SpeedManagerModule.xcframework.zip",
+        //     checksum: "fb70985432a4a8ca2d282e015fbef910a5a7e32cbc9bbff3578f6ae5854ec7eb"
+        // ),
+    ] : [
+        // Source distribution targets
         .target(
             name: "SpeedManagerModule",
             dependencies: []),

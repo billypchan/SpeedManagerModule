@@ -20,7 +20,7 @@ Your SpeedManagerModule now has complete binary package distribution capabilitie
 - 🎯 **`distribution-helper.sh`** - Interactive helper script
 
 ### Package Files  
-- 📄 **`Package-Binary.swift`** - Template for binary distribution
+- 📄 **`Package.swift`** - Unified package manifest supporting both source and binary distribution (use `useBinaryTarget` flag)
 - 📄 **`.github/workflows/build-xcframework.yml`** - CI/CD automation
 
 ### Documentation

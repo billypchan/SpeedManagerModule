@@ -83,39 +83,22 @@ zip -r "$FRAMEWORK_NAME.xcframework.zip" "$FRAMEWORK_NAME.xcframework"
 CHECKSUM=$(swift package compute-checksum "$FRAMEWORK_NAME.xcframework.zip" 2>/dev/null || shasum -a 256 "$FRAMEWORK_NAME.xcframework.zip" | cut -d' ' -f1)
 echo "$CHECKSUM" > "$FRAMEWORK_NAME.xcframework.zip.checksum"
 
-# Create binary Package.swift
-cat > "Package-Binary.swift" << EOF
-// swift-tools-version: 5.9
-import PackageDescription
+# Update Package.swift for binary distribution
+echo "📦 Updating Package.swift for binary distribution..."
 
-let package = Package(
-    name: "$FRAMEWORK_NAME",
-    platforms: [
-        .macOS(.v12),
-        .iOS(.v15),
-        .watchOS(.v8)
-    ],
-    products: [
-        .library(
-            name: "$FRAMEWORK_NAME",
-            targets: ["$FRAMEWORK_NAME"]),
-    ],
-    targets: [
-        .binaryTarget(
-            name: "$FRAMEWORK_NAME",
-            url: "https://github.com/your-username/your-repo/releases/download/1.0.0/$FRAMEWORK_NAME.xcframework.zip",
-            checksum: "$CHECKSUM"
-        ),
-    ]
-)
-EOF
+# Backup original Package.swift
+cp Package.swift Package-source.swift
+
+# Update the useBinaryTarget flag to true
+sed -i '' 's/let useBinaryTarget = false/let useBinaryTarget = true/' Package.swift
 
 echo ""
 echo "✅ XCFramework created successfully using swift-create-xcframework!"
 echo "📦 Files created:"
 echo "   - $FRAMEWORK_NAME.xcframework"
 echo "   - $FRAMEWORK_NAME.xcframework.zip"  
-echo "   - Package-Binary.swift (binary distribution template)"
+echo "   - Package.swift (configured for binary distribution)"
+echo "   - Package-source.swift (source distribution backup)"
 echo "   - Checksum: $CHECKSUM"
 echo ""
 echo "🚀 Ready for distribution!"

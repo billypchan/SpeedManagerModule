@@ -1,54 +1,123 @@
 import SwiftUI
 import SpeedManagerModule
-import SpeedometerSwiftUI
 
 extension Double {
     /// Returns the double value fixed to one decimal place.
     func fixedToOneDecimal() -> String {
         return String(format: "%.1f", self)
     }
+    
+    func fixedToZeroDecimal() -> String {
+        return String(format: "%.0f", self)
+    }
 }
 
 struct ContentView: View {
     @StateObject var speedManager = SpeedManager(speedUnit: .kilometersPerHour)
     @State var progress: CGFloat = 0.0
-    @State private var speed: TimeInterval = 0.01
-    let maxSpeed: CGFloat = 200.0 // Define a constant maximum speed
-
-    var body: some View {
-        VStack {
-            switch speedManager.authorizationStatus {
-            case .authorized:
-                Text("Your current speed is:")
-                    .monospaced()
-                Text("\(speedManager.speed.fixedToOneDecimal()) km/h")
-                    .monospaced()
-                
-                TimelineView(.animation(minimumInterval: speed)) { context in
-                    GaugeView(
-                        animationDuration: speed,
-                        progress: progress,
-                        numberOfSegments: 200,
-                        step: 20
-                    )
-                    .onChange(of: context.date) { oldValue, newValue in
-                        updateProgress()
-                    }
-                    .frame(width: 300, height: 300)
-                }
-                
-            default:
-                Text("Check your location permissions...")
-                ProgressView()
-            }
+    
+    // Helper function to convert authorization status to string
+    private func authorizationStatusString(_ status: SpeedManagerAuthorizationStatus) -> String {
+        switch status {
+        case .authorized:
+            return "Authorized"
+        case .denied:
+            return "Denied"
+        case .notDetermined:
+            return "Not Determined"
         }
     }
-
-    private func updateProgress() {
-        withAnimation(.easeInOut(duration: 0.5)) {
-            progress = CGFloat(speedManager.speed / maxSpeed)
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            switch speedManager.authorizationStatus {
+            case .authorized:
+                Text("Speed Manager Demo")
+                    .font(.title)
+                    .fontWeight(.bold)
+                
+                Text("Your current speed is:")
+                    .monospaced()
+                    .font(.headline)
+                
+                Text("\(speedManager.speed.fixedToOneDecimal()) km/h")
+                    .monospaced()
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.blue)
+                
+                // Simple progress bar instead of gauge
+                VStack {
+                    Text("Speed Progress")
+                        .font(.caption)
+                    
+                    ProgressView(value: min(speedManager.speed / 200.0, 1.0))
+                        .progressViewStyle(LinearProgressViewStyle(tint: .blue))
+                        .frame(width: 200)
+                    
+                    Text("Max: 200 km/h")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                }
+                
+                // Additional speed information
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Speed Details:")
+                        .font(.headline)
+                    
+                    HStack {
+                        Text("Authorization Status:")
+                        Spacer()
+                        Text(authorizationStatusString(speedManager.authorizationStatus))
+                            .foregroundColor(.green)
+                    }
+                    
+                    HStack {
+                        Text("Speed Unit:")
+                        Spacer()
+                        Text("km/h")
+                    }
+                    
+                    if speedManager.speed > 0 {
+                        HStack {
+                            Text("Speed in m/s:")
+                            Spacer()
+                            Text("\((speedManager.speed / 3.6).fixedToOneDecimal()) m/s")
+                        }
+                    }
+                    
+                    // Replace the mock heading calculation with a real value if available from SpeedManager (e.g., speedManager.headingDegrees)
+                    HStack {
+                        Text("Heading:")
+                        Spacer()
+                        let mockHeading = speedManager.speed.truncatingRemainder(dividingBy: 360).rounded()
+                        Text("\(mockHeading.fixedToZeroDecimal())°")
+                            .monospaced()
+                    }
+                }
+                .padding()
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(10)
+                
+            default:
+                VStack {
+                    Image(systemName: "location.slash")
+                        .font(.largeTitle)
+                        .foregroundColor(.orange)
+                    
+                    Text("Location Access Required")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    
+                    Text("Please allow location access to use the speed manager")
+                        .multilineTextAlignment(.center)
+                        .padding()
+                    
+                    ProgressView()
+                }
+            }
         }
-        speed = 0.01 // Adjust speed interval as needed
+        .padding()
     }
 }
 

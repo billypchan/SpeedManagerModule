@@ -142,6 +142,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./Package-Updated.swift
-        asset_name: Package-Binary.swift
+        asset_path: ./Package.swift
+        asset_name: Package.swift
         asset_content_type: text/plain
