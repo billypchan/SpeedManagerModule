@@ -6,6 +6,7 @@ This repository provides the **SpeedManagerModule**, a Swift package for real-ti
 
 ### Swift Package Manager (Recommended)
 
+#### Option 1: Package.swift
 Add to your `Package.swift`:
 
 ```swift
@@ -14,9 +15,47 @@ dependencies: [
 ]
 ```
 
-Or in Xcode:
-1. File → Add Package Dependencies
-2. Enter: `https://github.com/billypchan/SpeedManagerModule.git`
+#### Option 2: Xcode Integration
+1. **Open your Xcode project**
+2. **File** → **Add Package Dependencies**
+3. **Enter the repository URL**: `https://github.com/billypchan/SpeedManagerModule.git`
+4. **Choose version requirements**:
+   - Select "Up to Next Major Version" and enter `1.0.0`
+   - Or choose "Exact Version" for a specific release
+5. **Click "Add Package"**
+6. **Select your target** and click "Add Package"
+
+#### Option 3: Xcode with Binary Distribution (When Available)
+For faster build times with pre-compiled XCFramework:
+
+1. **Download the XCFramework**:
+   - Go to [Releases](https://github.com/billypchan/SpeedManagerModule/releases)
+   - Download `SpeedManagerModule.xcframework.zip`
+   - Extract the `.xcframework` file
+
+2. **Add to Xcode Project**:
+   - Drag the `SpeedManagerModule.xcframework` into your project
+   - Select "Copy items if needed"
+   - Add to your app target
+
+3. **Alternative: Use Binary Package Dependency**:
+   - File → Add Package Dependencies
+   - Enter: `https://github.com/billypchan/SpeedManagerModule.git`
+   - Xcode will automatically use the binary version if available
+
+#### Option 4: Local Package Development
+For local development or customization:
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/billypchan/SpeedManagerModule.git
+   ```
+
+2. **Add Local Package in Xcode**:
+   - File → Add Package Dependencies
+   - Click "Add Local..."
+   - Select the cloned `SpeedManagerModule` folder
+   - Add to your target
 
 ### Basic Usage
 
@@ -52,26 +91,132 @@ class ViewController: UIViewController, SpeedManagerDelegate {
 }
 ```
 
-## 📦 Distribution Options
+## 📦 Binary Package Integration
 
-This package provides multiple integration methods to suit different project needs:
+### Understanding Distribution Types
 
-### 1. Source Distribution (Default)
-- Direct Swift Package Manager integration
-- Full source code access
-- Supports all platforms
-- Best for development and customization
+This package supports both **source** and **binary** distribution methods:
 
-### 2. Binary Distribution (Coming Soon)
-- Pre-compiled XCFramework
-- Faster build times
-- Smaller repository size
-- Best for production apps
+- **Source Distribution**: Downloads and compiles source code (default)
+- **Binary Distribution**: Uses pre-compiled XCFramework for faster builds
 
-### 3. Manual Integration
-- Copy source files directly
-- Full control over compilation
-- No dependency management needed
+### Xcode Binary Package Setup
+
+#### Method 1: Automatic Binary Detection (Recommended)
+
+When binary distribution is available, Xcode automatically prefers it:
+
+1. **Add Package Dependency**:
+   ```
+   File → Add Package Dependencies
+   Repository: https://github.com/billypchan/SpeedManagerModule.git
+   ```
+
+2. **Xcode automatically chooses**:
+   - Binary version (if available) for faster builds
+   - Source version (fallback) if binary isn't available
+
+3. **Verify Binary Usage**:
+   - Check project navigator for `SpeedManagerModule` (binary icon)
+   - Build times should be significantly faster
+
+#### Method 2: Manual XCFramework Integration
+
+For direct XCFramework integration:
+
+1. **Download Binary Release**:
+   - Visit [Releases](https://github.com/billypchan/SpeedManagerModule/releases)
+   - Download latest `SpeedManagerModule.xcframework.zip`
+   - Extract to get `SpeedManagerModule.xcframework`
+
+2. **Add to Xcode Project**:
+   ```
+   Project Navigator → Right-click your project
+   → "Add Files to [ProjectName]"
+   → Select SpeedManagerModule.xcframework
+   → ✅ "Copy items if needed"
+   → ✅ Add to target
+   ```
+
+3. **Configure Framework Search Paths** (if needed):
+   - Project settings → Build Settings
+   - Search for "Framework Search Paths"
+   - Add path to XCFramework if not automatic
+
+4. **Import and Use**:
+   ```swift
+   import SpeedManagerModule
+   // Ready to use!
+   ```
+
+#### Method 3: Local Binary Package
+
+For testing binary builds locally:
+
+1. **Build Locally**:
+   ```bash
+   git clone https://github.com/billypchan/SpeedManagerModule.git
+   cd SpeedManagerModule
+   ./build-source-distribution.sh  # Creates distribution package
+   ```
+
+2. **Use Local Package**:
+   ```
+   Xcode → File → Add Package Dependencies
+   → "Add Local..."
+   → Select the cloned folder
+   ```
+
+### Binary vs Source Comparison
+
+| Feature | Source Distribution | Binary Distribution |
+|---------|-------------------|-------------------|
+| **Build Time** | Slower (compiles every time) | ⚡ **Faster** (pre-compiled) |
+| **Download Size** | Smaller initial download | Larger download |
+| **Debugging** | ✅ **Full source access** | Limited to public interfaces |
+| **Customization** | ✅ **Fully customizable** | Read-only |
+| **Platform Support** | ✅ **All Swift platforms** | iOS 15+, watchOS 8+ only |
+| **Swift Version** | ✅ **Adapts automatically** | Fixed Swift version |
+| **Xcode Integration** | ✅ **Seamless** | ✅ **Seamless** |
+
+### Troubleshooting Binary Integration
+
+#### XCFramework Not Found
+```bash
+# Verify XCFramework structure
+find . -name "*.xcframework" -exec ls -la {} \;
+```
+
+#### Build Errors with Binary
+1. **Clean Build Folder**: Product → Clean Build Folder
+2. **Reset Package Cache**: 
+   ```
+   File → Packages → Reset Package Caches
+   ```
+3. **Update Package**: 
+   ```
+   File → Packages → Update to Latest Package Versions
+   ```
+
+#### Fallback to Source
+If binary distribution has issues:
+1. Remove binary package dependency
+2. Add source dependency:
+   ```swift
+   .package(url: "https://github.com/billypchan/SpeedManagerModule.git", from: "1.0.0")
+   ```
+
+### Performance Benefits
+
+**Binary Distribution Advantages**:
+- ⚡ **3-5x faster** clean builds
+- 📦 **Reduced compilation overhead** 
+- 🔄 **Faster CI/CD pipelines**
+- 💾 **Lower memory usage** during builds
+
+**When to Use Each Method**:
+- **Binary**: Production apps, CI/CD, large teams
+- **Source**: Development, debugging, customization needs
 
 ## 🏗️ Building Distribution Packages
 
