@@ -4,13 +4,14 @@
 import PackageDescription
 
 // Set to true to use binary distribution, false for source distribution
-let useBinaryTarget = false
+let useBinaryTarget = true
 
 let package = Package(
     name: "SpeedManagerModule",
     platforms: [
         .macOS(.v12),
-        .iOS(.v15)
+        .iOS(.v15),
+        .watchOS(.v9)
     ],
     products: [
         .library(
