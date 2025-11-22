@@ -28,15 +28,17 @@ xcodebuild -scheme SpeedManagerModule \
 # Copy iOS Device framework
 cp -R "Build/DerivedData/Build/Products/Release-iphoneos/SpeedManagerModule.framework" "Build/Frameworks/SpeedManagerModule-iOS.framework"
 
-# Build for iOS Simulator (arm64)
-echo "🖥️ Building for iOS Simulator (arm64)..."
+# Build for iOS Simulator (arm64 + x86_64)
+echo "🖥️ Building for iOS Simulator (arm64 + x86_64)..."
 xcodebuild -scheme SpeedManagerModule \
     -destination "generic/platform=iOS Simulator" \
     -derivedDataPath "Build/DerivedData" \
     -sdk iphonesimulator \
-    -configuration Release \
+    -configuration Debug \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
     MACH_O_TYPE=mh_dylib \
+    ARCHS="arm64 x86_64" \
+    ONLY_ACTIVE_ARCH=NO \
     PRODUCT_NAME=SpeedManagerModule \
     build
 
