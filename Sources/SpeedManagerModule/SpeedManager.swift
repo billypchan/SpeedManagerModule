@@ -1,5 +1,6 @@
 import Foundation
 import CoreLocation
+import Combine
 
 /// A class that manages the monitoring and updating of speed using CoreLocation.
 public class SpeedManager: NSObject, ObservableObject, SpeedManagerTrigger {
