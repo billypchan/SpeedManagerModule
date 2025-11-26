@@ -1,14 +1,18 @@
 #!/bin/bash
 
+# Build XCFramework with watchOS arm64_32 support using working build pattern
 set -e
 
-echo "🚀 Adding watchOS support to XCFramework..."
+FRAMEWORK_NAME="SpeedManagerModule"
+OUTPUT_DIR="./Build"
+XCFRAMEWORK_PATH="$OUTPUT_DIR/$FRAMEWORK_NAME.xcframework"
 
-# Find the DerivedData path
-DERIVED_DATA=$(find ~/Library/Developer/Xcode/DerivedData -name "SpeedManagerModule-*" -type d | head -1)
-echo "📁 Using DerivedData: $DERIVED_DATA"
+echo "🚀 Building XCFramework with watchOS arm64_32 Support"
+echo "====================================================="
 
-# Backup current XCFramework
+# Clean
+rm -rf "$OUTPUT_DIR"
+mkdir -p "$OUTPUT_DIR"
 echo "💾 Backing up current XCFramework..."
 if [[ -d "Build/SpeedManagerModule.xcframework.backup" ]]; then
     rm -rf "Build/SpeedManagerModule.xcframework.backup"
