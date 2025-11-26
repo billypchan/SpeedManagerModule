@@ -28,15 +28,16 @@ xcodebuild archive \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
     SKIP_INSTALL=NO
 
-# Build iOS Simulator
-echo "📱 Building iOS Simulator archive..."
+# Build iOS Simulator (ARM64 only, no x86_64)
+echo "📱 Building iOS Simulator archive (ARM64 only)..."
 xcodebuild archive \
     -scheme "$FRAMEWORK_NAME" \
     -destination "generic/platform=iOS Simulator" \
     -archivePath "$ARCHIVES_DIR/iOS-Simulator.xcarchive" \
     -sdk iphonesimulator \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
-    SKIP_INSTALL=NO
+    SKIP_INSTALL=NO \
+    ARCHS="arm64"
 
 # Build watchOS with only modern architectures (arm64_32, arm64)
 echo "⌚ Building watchOS archive (arm64_32 + arm64, NO armv7k)..."
@@ -49,15 +50,16 @@ xcodebuild archive \
     SKIP_INSTALL=NO \
     ARCHS="arm64_32 arm64"
 
-# Build watchOS Simulator
-echo "⌚ Building watchOS Simulator archive..."
+# Build watchOS Simulator (ARM64 only, no x86_64)
+echo "⌚ Building watchOS Simulator archive (ARM64 only)..."
 xcodebuild archive \
     -scheme "$FRAMEWORK_NAME" \
     -destination "generic/platform=watchOS Simulator" \
     -archivePath "$ARCHIVES_DIR/watchOS-Simulator.xcarchive" \
     -sdk watchsimulator \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
-    SKIP_INSTALL=NO
+    SKIP_INSTALL=NO \
+    ARCHS="arm64"
 
 echo ""
 
@@ -206,21 +208,24 @@ cd ..
 sed -i.bak 's/let useBinaryTarget = false/let useBinaryTarget = true/' Package.swift
 
 echo ""
-echo "🎉 SUCCESS! watchOS Fix Completed (No armv7k)!"
+echo "🎉 SUCCESS! Modern Architecture Build Completed!"
 echo "==============================================="
 echo "📱 XCFramework: $XCFRAMEWORK_PATH"
 echo "📦 Distribution: $BUILD_DIR/$FRAMEWORK_NAME.xcframework.zip"
 echo "🔐 Checksum: $CHECKSUM"
 echo ""
-echo "🎯 Key Achievement: watchOS arm64_32 Architecture (Modern Only)!"
+echo "🎯 Key Achievement: ARM64-only Simulators + Modern watchOS!"
 echo "✅ Your XCFramework now supports:"
 echo "   • iOS Device (arm64)"
-echo "   • iOS Simulator (x86_64 + arm64)"
+echo "   • iOS Simulator (arm64 only) ← Apple Silicon!"
 echo "   • watchOS Device (arm64_32 + arm64) ← MODERN ONLY!"
-echo "   • watchOS Simulator (x86_64 + arm64)"
+echo "   • watchOS Simulator (arm64 only) ← Apple Silicon!"
 echo ""
-echo "📝 Note: armv7k (legacy Apple Watch) support removed"
-echo "🚀 The XCFramework is now ready for distribution!"
+echo "📝 Notes:"
+echo "   ❌ Removed armv7k (legacy Apple Watch)"
+echo "   ❌ Removed x86_64 (Intel simulators)" 
+echo "   ✅ Optimized for Apple Silicon development"
+echo "🚀 The XCFramework is now ready for modern deployment!"
 echo "   Modern Apple Watch devices will work with your framework!"
 
 echo ""
