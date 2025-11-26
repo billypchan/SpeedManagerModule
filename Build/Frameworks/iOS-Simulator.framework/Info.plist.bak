@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleDevelopmentRegion</key>
-    <string>en</string>
     <key>CFBundleExecutable</key>
     <string>SpeedManagerModule</string>
     <key>CFBundleIdentifier</key>
@@ -15,10 +13,17 @@
     <key>CFBundlePackageType</key>
     <string>FMWK</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.0</string>
+    <string>1.0</string>
     <key>CFBundleVersion</key>
     <string>1</string>
+<<<<<<<< HEAD:Build/Frameworks/iOS-Simulator.framework/Info.plist.bak
     <key>MinimumOSVersion</key>
     <string>15.0</string>
+========
+    <key>CFBundleSupportedPlatforms</key>
+    <array>
+        <string>iPhoneSimulator</string>
+    </array>
+>>>>>>>> origin/main:Build/TempFrameworks/SpeedManagerModule-iPhoneSimulator.framework/Info.plist
 </dict>
 </plist>
