@@ -3,16 +3,63 @@
 # Create final XCFramework with watchOS arm64_32 support
 set -e
 
-echo "🚀 Creating XCFramework with watchOS arm64_32 Support"
-echo "======================================================"
+echo "🚀 Creating XCFramework with watchOS arm64_32 Support (No armv7k)"
+echo "=============================================================="
 
 FRAMEWORK_NAME="SpeedManagerModule"
 BUILD_DIR="Build"
 FRAMEWORKS_DIR="$BUILD_DIR/Frameworks"
 XCFRAMEWORK_PATH="$BUILD_DIR/$FRAMEWORK_NAME.xcframework"
+ARCHIVES_DIR="$BUILD_DIR/Archives"
 
-rm -rf "$FRAMEWORKS_DIR" "$XCFRAMEWORK_PATH"
-mkdir -p "$FRAMEWORKS_DIR"
+rm -rf "$FRAMEWORKS_DIR" "$XCFRAMEWORK_PATH" "$ARCHIVES_DIR"
+mkdir -p "$FRAMEWORKS_DIR" "$ARCHIVES_DIR"
+
+echo ""
+echo "🔨 Building Archives..."
+
+# Build iOS
+echo "📱 Building iOS archive..."
+xcodebuild archive \
+    -scheme "$FRAMEWORK_NAME" \
+    -destination "generic/platform=iOS" \
+    -archivePath "$ARCHIVES_DIR/iOS.xcarchive" \
+    -sdk iphoneos \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    SKIP_INSTALL=NO
+
+# Build iOS Simulator
+echo "📱 Building iOS Simulator archive..."
+xcodebuild archive \
+    -scheme "$FRAMEWORK_NAME" \
+    -destination "generic/platform=iOS Simulator" \
+    -archivePath "$ARCHIVES_DIR/iOS-Simulator.xcarchive" \
+    -sdk iphonesimulator \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    SKIP_INSTALL=NO
+
+# Build watchOS with only modern architectures (arm64_32, arm64)
+echo "⌚ Building watchOS archive (arm64_32 + arm64, NO armv7k)..."
+xcodebuild archive \
+    -scheme "$FRAMEWORK_NAME" \
+    -destination "generic/platform=watchOS" \
+    -archivePath "$ARCHIVES_DIR/watchOS.xcarchive" \
+    -sdk watchos \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    SKIP_INSTALL=NO \
+    ARCHS="arm64_32 arm64"
+
+# Build watchOS Simulator
+echo "⌚ Building watchOS Simulator archive..."
+xcodebuild archive \
+    -scheme "$FRAMEWORK_NAME" \
+    -destination "generic/platform=watchOS Simulator" \
+    -archivePath "$ARCHIVES_DIR/watchOS-Simulator.xcarchive" \
+    -sdk watchsimulator \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    SKIP_INSTALL=NO
+
+echo ""
 
 # Function to create framework from object file
 create_framework() {
@@ -159,21 +206,22 @@ cd ..
 sed -i.bak 's/let useBinaryTarget = false/let useBinaryTarget = true/' Package.swift
 
 echo ""
-echo "🎉 SUCCESS! watchOS Fix Completed!"
-echo "=================================="
+echo "🎉 SUCCESS! watchOS Fix Completed (No armv7k)!"
+echo "==============================================="
 echo "📱 XCFramework: $XCFRAMEWORK_PATH"
 echo "📦 Distribution: $BUILD_DIR/$FRAMEWORK_NAME.xcframework.zip"
 echo "🔐 Checksum: $CHECKSUM"
 echo ""
-echo "🎯 Key Achievement: watchOS arm64_32 Architecture Added!"
+echo "🎯 Key Achievement: watchOS arm64_32 Architecture (Modern Only)!"
 echo "✅ Your XCFramework now supports:"
 echo "   • iOS Device (arm64)"
 echo "   • iOS Simulator (x86_64 + arm64)"
-echo "   • watchOS Device (armv7k + arm64_32 + arm64) ← FIXED!"
+echo "   • watchOS Device (arm64_32 + arm64) ← MODERN ONLY!"
 echo "   • watchOS Simulator (x86_64 + arm64)"
 echo ""
+echo "📝 Note: armv7k (legacy Apple Watch) support removed"
 echo "🚀 The XCFramework is now ready for distribution!"
-echo "   Modern Apple Watch devices will now work with your framework!"
+echo "   Modern Apple Watch devices will work with your framework!"
 
 echo ""
 echo "✨ Mission Accomplished! ✨"
