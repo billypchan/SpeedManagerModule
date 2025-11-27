@@ -9,6 +9,12 @@ XCFRAMEWORK_NAME="${PROJECT_NAME}.xcframework"
 
 echo "Building for all platforms..."
 
+# Clean up first
+rm -rf build-frameworks frameworks
+
+# Create directories
+mkdir -p build-frameworks
+
 # Build for iOS Device
 echo "Building iOS Device (arm64)..."
 xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=iOS" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
@@ -31,13 +37,7 @@ xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS Sim
 
 echo "Creating framework structures..."
 
-# Clean up
-rm -rf frameworks
-
-# Create framework directories
-mkdir -p frameworks
-
-# Function to create framework structure
+# Function to create framework structure with proper dynamic library
 create_framework() {
     local platform=$1
     local platform_name=$2
@@ -45,7 +45,7 @@ create_framework() {
     local supported_platforms=$4
     local platform_dir=$5
     
-    FRAMEWORK_DIR="frameworks/${platform}/${FRAMEWORK_NAME}"
+    FRAMEWORK_DIR="build-frameworks/${platform}/${FRAMEWORK_NAME}"
     mkdir -p "${FRAMEWORK_DIR}/Modules"
     mkdir -p "${FRAMEWORK_DIR}/Headers"
     
@@ -61,12 +61,17 @@ create_framework() {
     
     # Copy Swift module files
     if [ -d "${DERIVED_DATA_BASE}/${PROJECT_NAME}.swiftmodule" ]; then
-        cp -r "${DERIVED_DATA_BASE}/${PROJECT_NAME}.swiftmodule"/* "${FRAMEWORK_DIR}/Modules/" 2>/dev/null || true
+        cp -r "${DERIVED_DATA_BASE}/${PROJECT_NAME}.swiftmodule" "${FRAMEWORK_DIR}/Modules/"
     fi
     
-    # Copy binary
+    # Copy the compiled object file as the framework binary
+    # For SPM binary targets, we can use the compiled object file directly
     if [ -f "${DERIVED_DATA_BASE}/${PROJECT_NAME}.o" ]; then
         cp "${DERIVED_DATA_BASE}/${PROJECT_NAME}.o" "${FRAMEWORK_DIR}/${PROJECT_NAME}"
+        echo "Copied object file for $platform: ${DERIVED_DATA_BASE}/${PROJECT_NAME}.o"
+    else
+        echo "Warning: Could not find compiled object file for $platform"
+        return 1
     fi
     
     # Create Info.plist
@@ -139,28 +144,14 @@ create_framework "watchos-arm64-simulator" "watchOS Simulator" "8.0" "WatchSimul
 
 echo "Creating XCFramework..."
 
-# Build framework arguments
-FRAMEWORK_ARGS=""
-
-# Add frameworks that exist
-for platform in ios-arm64 ios-arm64-simulator macos-arm64 watchos-arm64 watchos-arm64-simulator; do
-    if [ -d "frameworks/${platform}/${FRAMEWORK_NAME}" ]; then
-        FRAMEWORK_ARGS="${FRAMEWORK_ARGS} -framework frameworks/${platform}/${FRAMEWORK_NAME}"
-        echo "Adding $platform framework"
-    else
-        echo "Warning: $platform framework not found"
-    fi
-done
-
-if [ -z "$FRAMEWORK_ARGS" ]; then
-    echo "Error: No frameworks were created successfully"
-    exit 1
-fi
-
-echo "Framework arguments: $FRAMEWORK_ARGS"
-
-# Create XCFramework
-xcodebuild -create-xcframework $FRAMEWORK_ARGS -output "${XCFRAMEWORK_NAME}"
+# Create XCFramework from frameworks
+xcodebuild -create-xcframework \
+    -framework "build-frameworks/ios-arm64/${FRAMEWORK_NAME}" \
+    -framework "build-frameworks/ios-arm64-simulator/${FRAMEWORK_NAME}" \
+    -framework "build-frameworks/macos-arm64/${FRAMEWORK_NAME}" \
+    -framework "build-frameworks/watchos-arm64/${FRAMEWORK_NAME}" \
+    -framework "build-frameworks/watchos-arm64-simulator/${FRAMEWORK_NAME}" \
+    -output "${XCFRAMEWORK_NAME}"
 
 echo "Creating ZIP archive..."
 zip -r "${XCFRAMEWORK_NAME}.zip" "${XCFRAMEWORK_NAME}"

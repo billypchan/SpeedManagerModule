@@ -7,8 +7,8 @@ let package = Package(
     name: "SpeedManagerModule",
     platforms: [
         .macOS(.v12),
-        .iOS(.v15),
-        .watchOS(.v8)
+        .iOS(.v17),
+        .watchOS(.v10)
     ],
     products: [
         .library(
@@ -22,11 +22,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "SpeedManagerModule",
-            path: "SpeedManagerModule.xcframework"
-        ),
-        .testTarget(
-            name: "SpeedManagerModuleTests",
-            dependencies: ["SpeedManagerModule"]),
-    ],
-    swiftLanguageVersions: [SwiftVersion.v5]
+            url: "https://github.com/yourorg/SpeedManagerModule/releases/download/1.0.0/SpeedManagerModule.xcframework.zip",
+            checksum: "b1f79eee9bd0f41f0f2fcca1c1efe48588d9ea3d707ca4b9d425969b221d1876"
+        )
+    ]
 )
