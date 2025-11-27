@@ -1,0 +1,114 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.1 effective-5.10 (swiftlang-6.2.1.4.8 clang-1700.4.4.1)
+// swift-module-flags: -target arm64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -module-name SpeedManagerModule -package-name speedmanagermodule
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.1
+import Combine
+import CoreLocation
+import Foundation
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@objc public class SpeedManager : ObjectiveC.NSObject, Foundation.ObservableObject, SpeedManagerModule.SpeedManagerTrigger {
+  weak public var delegate: (any SpeedManagerModule.SpeedManagerDelegate)?
+  #if compiler(>=5.3) && $NonescapableTypes
+  @Combine.Published @_projectedValueProperty($location) public var location: _LocationEssentials.CLLocation? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var $location: Combine.Published<_LocationEssentials.CLLocation?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  #endif
+  @Combine.Published @_projectedValueProperty($authorizationStatus) public var authorizationStatus: SpeedManagerModule.SpeedManagerAuthorizationStatus {
+    get
+  }
+  public var $authorizationStatus: Combine.Published<SpeedManagerModule.SpeedManagerAuthorizationStatus>.Publisher {
+    get
+  }
+  @Combine.Published @_projectedValueProperty($speed) public var speed: Swift.Double {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+  }
+  public var $speed: Combine.Published<Swift.Double>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($speedAccuracy) public var speedAccuracy: Swift.Double {
+    get
+  }
+  public var $speedAccuracy: Combine.Published<Swift.Double>.Publisher {
+    get
+  }
+  @Combine.Published @_projectedValueProperty($degrees) public var degrees: Swift.Double {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  public var $degrees: Combine.Published<Swift.Double>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(speedUnit: SpeedManagerModule.SpeedManagerUnit, trigger: (any SpeedManagerModule.SpeedManagerTrigger)? = nil, allowsBackgroundLocationUpdates: Swift.Bool = false)
+  #endif
+  public func startUpdatingSpeed()
+  public func startMonitoringSpeed()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+extension SpeedManagerModule.SpeedManager : CoreLocation.CLLocationManagerDelegate {
+  @objc dynamic public func locationManagerDidChangeAuthorization(_ manager: CoreLocation.CLLocationManager)
+  @objc dynamic public func locationManager(_ manager: CoreLocation.CLLocationManager, didUpdateLocations locations: [_LocationEssentials.CLLocation])
+  @objc dynamic public func locationManager(_ manager: CoreLocation.CLLocationManager, didUpdateHeading newHeading: CoreLocation.CLHeading)
+  @objc dynamic public func locationManager(_ manager: CoreLocation.CLLocationManager, didFailWithError error: any Swift.Error)
+}
+public enum SpeedManagerAuthorizationStatus {
+  case notDetermined
+  case authorized
+  case denied
+  public static func == (a: SpeedManagerModule.SpeedManagerAuthorizationStatus, b: SpeedManagerModule.SpeedManagerAuthorizationStatus) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol SpeedManagerDelegate : AnyObject {
+  func speedManager(_ speedManager: SpeedManagerModule.SpeedManager, didUpdateSpeed speed: Swift.Double, speedAccuracy: Swift.Double)
+  func speedManager(_ speedManager: SpeedManagerModule.SpeedManager, didFailWithError error: any Swift.Error)
+  func speedManager(_ speedManager: SpeedManagerModule.SpeedManager, didUpdateAuthorizationStatus status: SpeedManagerModule.SpeedManagerAuthorizationStatus)
+  func speedManagerDidFailWithLocationServicesUnavailable(_ speedManager: SpeedManagerModule.SpeedManager)
+}
+public protocol SpeedManagerTrigger {
+  func startUpdatingSpeed()
+  func startMonitoringSpeed()
+}
+public enum SpeedManagerUnit : Swift.Double {
+  case metersPerSecond
+  case kilometersPerHour
+  case milesPerHour
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.Double)
+  #endif
+  public typealias RawValue = Swift.Double
+  public var rawValue: Swift.Double {
+    get
+  }
+}
+extension SpeedManagerModule.SpeedManagerAuthorizationStatus : Swift.Equatable {}
+extension SpeedManagerModule.SpeedManagerAuthorizationStatus : Swift.Hashable {}
+extension SpeedManagerModule.SpeedManagerUnit : Swift.Equatable {}
+extension SpeedManagerModule.SpeedManagerUnit : Swift.Hashable {}
+extension SpeedManagerModule.SpeedManagerUnit : Swift.RawRepresentable {}
