@@ -28,8 +28,8 @@ echo "Building macOS (arm64)..."
 xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=macOS" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
 
 # Build for watchOS
-echo "Building watchOS (arm64)..."  
-xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
+echo "Building watchOS (arm64 arm64_32)..."  
+xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS="arm64 arm64_32"
 
 # Build for watchOS Simulator
 echo "Building watchOS Simulator (arm64)..."
