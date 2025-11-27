@@ -23,9 +23,6 @@ let package = Package(
             name: "SpeedManagerModule",
             path: "SpeedManagerModule.xcframework"
         ),
-        .testTarget(
-            name: "SpeedManagerModuleTests",
-            dependencies: ["SpeedManagerModule"]),
     ],
     swiftLanguageVersions: [SwiftVersion.v5]
 )
