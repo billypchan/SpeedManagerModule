@@ -25,6 +25,10 @@ xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=macOS" -con
 echo "Building watchOS (arm64)..."  
 xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
 
+# Build for watchOS Simulator
+echo "Building watchOS Simulator (arm64)..."
+xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS Simulator" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
+
 echo "Creating framework structures..."
 
 # Clean up
@@ -131,6 +135,7 @@ create_framework "ios-arm64" "iOS Device" "15.0" "iPhoneOS" "Release-iphoneos"
 create_framework "ios-arm64-simulator" "iOS Simulator" "15.0" "iPhoneSimulator" "Release-iphonesimulator"  
 create_framework "macos-arm64" "macOS" "12.0" "MacOSX" "Release"
 create_framework "watchos-arm64" "watchOS" "8.0" "WatchOS" "Release-watchos"
+create_framework "watchos-arm64-simulator" "watchOS Simulator" "8.0" "WatchSimulator" "Release-watchsimulator"
 
 echo "Creating XCFramework..."
 
@@ -138,7 +143,7 @@ echo "Creating XCFramework..."
 FRAMEWORK_ARGS=""
 
 # Add frameworks that exist
-for platform in ios-arm64 ios-arm64-simulator macos-arm64 watchos-arm64; do
+for platform in ios-arm64 ios-arm64-simulator macos-arm64 watchos-arm64 watchos-arm64-simulator; do
     if [ -d "frameworks/${platform}/${FRAMEWORK_NAME}" ]; then
         FRAMEWORK_ARGS="${FRAMEWORK_ARGS} -framework frameworks/${platform}/${FRAMEWORK_NAME}"
         echo "Adding $platform framework"
