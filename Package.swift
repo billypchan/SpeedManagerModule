@@ -20,9 +20,11 @@ let package = Package(
         // .package(url: /* package url */, from: "1.0.0"),
     ],
     targets: [
-        .target(
+        .binaryTarget(
             name: "SpeedManagerModule",
-            dependencies: []),
+            url: "https://github.com/billypchan/SpeedManagerModule/releases/download/0.2/SpeedManagerModule.xcframework.zip",
+            checksum: "b64333457922e9d8cca4e725ce008fcc842e5919a40e66e46ac824e20175f49d"
+        ),
         .testTarget(
             name: "SpeedManagerModuleTests",
             dependencies: ["SpeedManagerModule"]),
