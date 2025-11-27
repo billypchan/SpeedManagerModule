@@ -22,8 +22,11 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "SpeedManagerModule",
-            url: "https://github.com/yourorg/SpeedManagerModule/releases/download/1.0.0/SpeedManagerModule.xcframework.zip",
-            checksum: "b1f79eee9bd0f41f0f2fcca1c1efe48588d9ea3d707ca4b9d425969b221d1876"
-        )
-    ]
+            path: "SpeedManagerModule.xcframework"
+        ),
+        .testTarget(
+            name: "SpeedManagerModuleTests",
+            dependencies: ["SpeedManagerModule"]),
+    ],
+    swiftLanguageVersions: [SwiftVersion.v5]
 )
