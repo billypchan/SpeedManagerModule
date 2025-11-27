@@ -1,6 +1,0 @@
-framework module SpeedManagerModule {
-    umbrella header "SpeedManagerModule.h"
-    
-    export *
-    module * { export * }
-}

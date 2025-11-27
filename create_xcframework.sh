@@ -23,9 +23,7 @@ xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=iOS" -confi
 echo "Building iOS Simulator (arm64)..."
 xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=iOS Simulator" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
 
-# Build for macOS
-echo "Building macOS (arm64)..."
-xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=macOS" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
+
 
 # Build for watchOS
 echo "Building watchOS (arm64 arm64_32)..."  
@@ -138,7 +136,7 @@ EOF
 # Create frameworks for all platforms
 create_framework "ios-arm64" "iOS Device" "15.0" "iPhoneOS" "Release-iphoneos"
 create_framework "ios-arm64-simulator" "iOS Simulator" "15.0" "iPhoneSimulator" "Release-iphonesimulator"  
-create_framework "macos-arm64" "macOS" "12.0" "MacOSX" "Release"
+
 create_framework "watchos-arm64" "watchOS" "8.0" "WatchOS" "Release-watchos"
 create_framework "watchos-arm64-simulator" "watchOS Simulator" "8.0" "WatchSimulator" "Release-watchsimulator"
 
@@ -148,7 +146,6 @@ echo "Creating XCFramework..."
 xcodebuild -create-xcframework \
     -framework "build-frameworks/ios-arm64/${FRAMEWORK_NAME}" \
     -framework "build-frameworks/ios-arm64-simulator/${FRAMEWORK_NAME}" \
-    -framework "build-frameworks/macos-arm64/${FRAMEWORK_NAME}" \
     -framework "build-frameworks/watchos-arm64/${FRAMEWORK_NAME}" \
     -framework "build-frameworks/watchos-arm64-simulator/${FRAMEWORK_NAME}" \
     -output "${XCFRAMEWORK_NAME}"
