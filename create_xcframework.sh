@@ -17,21 +17,21 @@ mkdir -p build-frameworks
 
 # Build for iOS Device
 echo "Building iOS Device (arm64)..."
-xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=iOS" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
+xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=iOS" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
 
 # Build for iOS Simulator 
 echo "Building iOS Simulator (arm64)..."
-xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=iOS Simulator" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
+xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=iOS Simulator" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
 
 
 
 # Build for watchOS
 echo "Building watchOS (arm64 arm64_32)..."  
-xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS="arm64 arm64_32"
+xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS="arm64 arm64_32"
 
 # Build for watchOS Simulator
 echo "Building watchOS Simulator (arm64)..."
-xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS Simulator" -configuration Release BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
+xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS Simulator" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
 
 echo "Creating framework structures..."
 

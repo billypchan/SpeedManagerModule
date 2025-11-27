@@ -1,0 +1,24 @@
+// Release Configuration for App Store Distribution
+// Disable code coverage and profiling for release builds
+
+// Code Coverage Settings
+CLANG_ENABLE_CODE_COVERAGE = NO
+GCC_GENERATE_TEST_COVERAGE_FILES = NO
+GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO
+
+// Testability Settings  
+ENABLE_TESTABILITY = NO
+
+// Code Signing (for framework builds)
+CODE_SIGN_IDENTITY = 
+CODE_SIGNING_REQUIRED = NO
+
+// Optimization
+GCC_OPTIMIZATION_LEVEL = s
+SWIFT_OPTIMIZATION_LEVEL = -O
+
+// Other Release Settings
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+DEPLOYMENT_POSTPROCESSING = YES
+COPY_PHASE_STRIP = YES
+STRIP_INSTALLED_PRODUCT = YES
