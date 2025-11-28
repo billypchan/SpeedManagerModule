@@ -9,6 +9,12 @@ GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO
 // Testability Settings  
 ENABLE_TESTABILITY = NO
 
+// Swift Compiler Flags - Disable Profiling
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE
+OTHER_SWIFT_FLAGS = -Xfrontend -no-serialize-debugging-options -Xfrontend -disable-legacy-type-info -Xfrontend -disable-llvm-value-names -disable-incremental-llvm-codegen
+SWIFT_ENABLE_TESTABILITY = NO
+ENABLE_CODE_COVERAGE = NO
+
 // Code Signing (for framework builds)
 CODE_SIGN_IDENTITY = 
 CODE_SIGNING_REQUIRED = NO
@@ -17,8 +23,12 @@ CODE_SIGNING_REQUIRED = NO
 GCC_OPTIMIZATION_LEVEL = s
 SWIFT_OPTIMIZATION_LEVEL = -O
 
+// Disable Debug Information Generation for Release
+DEBUG_INFORMATION_FORMAT = 
+GENERATE_PROFILING_CODE = NO
+
 // Other Release Settings
-DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
-DEPLOYMENT_POSTPROCESSING = YES
-COPY_PHASE_STRIP = YES
-STRIP_INSTALLED_PRODUCT = YES
+DEPLOYMENT_POSTPROCESSING = NO
+COPY_PHASE_STRIP = NO
+STRIP_INSTALLED_PRODUCT = NO
+STRIP_STYLE = non-global

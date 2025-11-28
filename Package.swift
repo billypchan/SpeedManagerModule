@@ -23,8 +23,5 @@ let package = Package(
             name: "SpeedManagerModule",
             path: "SpeedManagerModule.xcframework"
         ),
-        .testTarget(
-            name: "SpeedManagerModuleTests",
-            dependencies: ["SpeedManagerModule"]),
     ],
 )

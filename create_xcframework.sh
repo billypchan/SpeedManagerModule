@@ -17,21 +17,21 @@ mkdir -p build-frameworks
 
 # Build for iOS Device
 echo "Building iOS Device (arm64)..."
-xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=iOS" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
+xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=iOS" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64 OTHER_SWIFT_FLAGS="-Xfrontend -no-serialize-debugging-options -Xfrontend -disable-llvm-value-names -disable-incremental-llvm-codegen" GCC_GENERATE_TEST_COVERAGE_FILES=NO CLANG_ENABLE_CODE_COVERAGE=NO GENERATE_PROFILING_CODE=NO SWIFT_ENABLE_TESTABILITY=NO ENABLE_CODE_COVERAGE=NO
 
 # Build for iOS Simulator 
 echo "Building iOS Simulator (arm64)..."
-xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=iOS Simulator" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
+xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=iOS Simulator" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64 OTHER_SWIFT_FLAGS="-Xfrontend -no-serialize-debugging-options -Xfrontend -disable-llvm-value-names -disable-incremental-llvm-codegen" GCC_GENERATE_TEST_COVERAGE_FILES=NO CLANG_ENABLE_CODE_COVERAGE=NO GENERATE_PROFILING_CODE=NO SWIFT_ENABLE_TESTABILITY=NO ENABLE_CODE_COVERAGE=NO
 
 
 
 # Build for watchOS
 echo "Building watchOS (arm64 arm64_32)..."  
-xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS="arm64 arm64_32"
+xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS="arm64 arm64_32" OTHER_SWIFT_FLAGS="-Xfrontend -no-serialize-debugging-options -Xfrontend -disable-llvm-value-names -disable-incremental-llvm-codegen" GCC_GENERATE_TEST_COVERAGE_FILES=NO CLANG_ENABLE_CODE_COVERAGE=NO GENERATE_PROFILING_CODE=NO SWIFT_ENABLE_TESTABILITY=NO ENABLE_CODE_COVERAGE=NO
 
 # Build for watchOS Simulator
 echo "Building watchOS Simulator (arm64)..."
-xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS Simulator" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64
+xcodebuild build -scheme $SCHEME_NAME -destination "generic/platform=watchOS Simulator" -configuration Release -xcconfig Release.xcconfig BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS=arm64 OTHER_SWIFT_FLAGS="-Xfrontend -no-serialize-debugging-options -Xfrontend -disable-llvm-value-names -disable-incremental-llvm-codegen" GCC_GENERATE_TEST_COVERAGE_FILES=NO CLANG_ENABLE_CODE_COVERAGE=NO GENERATE_PROFILING_CODE=NO SWIFT_ENABLE_TESTABILITY=NO ENABLE_CODE_COVERAGE=NO
 
 echo "Creating framework structures..."
 
