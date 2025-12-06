@@ -19,6 +19,9 @@ public class SpeedManager: NSObject, ObservableObject, SpeedManagerTrigger {
     /// Indicates whether background location updates are allowed.
     private var allowsBackgroundLocationUpdates: Bool
     
+    /// Indicates whether heading updates are enabled.
+    private var enableHeadingUpdates: Bool
+    
     /// The delegate to receive updates from the SpeedManager.
     public weak var delegate: SpeedManagerDelegate?
 
@@ -55,12 +58,15 @@ public class SpeedManager: NSObject, ObservableObject, SpeedManagerTrigger {
     ///   - speedUnit: The unit of speed measurement.
     ///   - trigger: An optional trigger for starting speed updates. If nil, the SpeedManager will trigger itself.
     ///   - allowsBackgroundLocationUpdates: A Boolean value indicating whether background location updates are allowed.
+    ///   - enableHeadingUpdates: A Boolean value indicating whether heading updates are enabled. Defaults to false.
     public init(speedUnit: SpeedManagerUnit,
                 trigger: SpeedManagerTrigger? = nil,
-                allowsBackgroundLocationUpdates: Bool = false) {
+                allowsBackgroundLocationUpdates: Bool = false,
+                enableHeadingUpdates: Bool = false) {
         
         self.speedUnit = speedUnit
         self.allowsBackgroundLocationUpdates = allowsBackgroundLocationUpdates
+        self.enableHeadingUpdates = enableHeadingUpdates
         super.init()
         self.trigger = trigger ?? self
        
@@ -86,7 +92,9 @@ public class SpeedManager: NSObject, ObservableObject, SpeedManagerTrigger {
                 locationManager.allowsBackgroundLocationUpdates = true
             }
             locationManager.startUpdatingLocation()
-            locationManager.startUpdatingHeading()
+            if enableHeadingUpdates {
+                locationManager.startUpdatingHeading()
+            }
         case .notDetermined:
             locationManager.requestAlwaysAuthorization()
         case .denied:
